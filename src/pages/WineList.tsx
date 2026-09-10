@@ -1,54 +1,80 @@
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-type WineCategory = 'sparkling' | 'white' | 'rose' | 'red' | 'orange';
-type Section = 'byglass' | 'bottle';
+type Section = 'bottle' | 'byglass';
 
 export default function WineList() {
   const [activeSection, setActiveSection] = useState<Section>('bottle');
 
   return (
-    <div className="min-h-screen bg-stone-50">
-      {/* Header */}
-      <section className="bg-stone-900 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-amber-400 text-sm uppercase tracking-[0.3em] mb-3">Public House</p>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Wine List</h1>
-          <p className="text-stone-300 max-w-2xl mx-auto text-lg">
-            A carefully curated selection of natural and organic wines from across Europe.
-          </p>
+    <div className="min-h-screen bg-stone-950">
+      {/* Hero */}
+      <section className="relative h-[60vh] min-h-[400px] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src="https://image.qwenlm.ai/generated-images/7dd675e9-a5b5-4b6f-a284-762b319cdbd5/_result.png"
+            alt="Wine collection"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-stone-950/70 via-stone-950/50 to-stone-950"></div>
+        </div>
+        <div className="relative z-10 text-center px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <p className="text-amber-400 text-sm uppercase tracking-[0.4em] mb-4 font-medium">Public House</p>
+            <h1 className="text-5xl md:text-7xl font-bold text-white mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
+              Wine List
+            </h1>
+            <p className="text-stone-300 max-w-2xl mx-auto text-lg">
+              A carefully curated selection of natural and organic wines from across Europe.
+            </p>
+          </motion.div>
         </div>
       </section>
 
       {/* Section Toggle */}
-      <div className="sticky top-16 md:top-20 z-40 bg-white border-b border-stone-200 shadow-sm">
+      <div className="sticky top-16 md:top-20 z-40 bg-stone-950/95 backdrop-blur-xl border-b border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex">
-            <button
-              onClick={() => setActiveSection('bottle')}
-              className={`px-6 py-4 text-sm font-semibold uppercase tracking-wider transition-colors border-b-2 ${
-                activeSection === 'bottle'
-                  ? 'border-amber-600 text-amber-700'
-                  : 'border-transparent text-stone-500 hover:text-stone-700'
-              }`}
-            >
-              By the Bottle
-            </button>
-            <button
-              onClick={() => setActiveSection('byglass')}
-              className={`px-6 py-4 text-sm font-semibold uppercase tracking-wider transition-colors border-b-2 ${
-                activeSection === 'byglass'
-                  ? 'border-amber-600 text-amber-700'
-                  : 'border-transparent text-stone-500 hover:text-stone-700'
-              }`}
-            >
-              By the Glass
-            </button>
+          <div className="flex justify-center">
+            <div className="bg-white/5 rounded-full p-1 flex gap-1">
+              {(['bottle', 'byglass'] as Section[]).map((section) => (
+                <button
+                  key={section}
+                  onClick={() => setActiveSection(section)}
+                  className={`relative px-8 py-3 text-sm font-semibold uppercase tracking-wider rounded-full transition-all ${
+                    activeSection === section ? 'text-stone-900' : 'text-stone-400 hover:text-white'
+                  }`}
+                >
+                  {activeSection === section && (
+                    <motion.div
+                      layoutId="wineTab"
+                      className="absolute inset-0 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full"
+                      transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                    />
+                  )}
+                  <span className="relative z-10">{section === 'bottle' ? 'By the Bottle' : 'By the Glass'}</span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {activeSection === 'byglass' ? <ByGlassList /> : <ByBottleList />}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeSection}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
+          >
+            {activeSection === 'byglass' ? <ByGlassList /> : <ByBottleList />}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );
@@ -56,40 +82,65 @@ export default function WineList() {
 
 function WineCard({ name, region, grape, price }: { name: string; region: string; grape?: string; price: string }) {
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-4 py-3 border-b border-stone-100 last:border-0">
+    <motion.div
+      initial={{ opacity: 0, x: -20 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true }}
+      className="group flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 py-4 px-4 rounded-xl hover:bg-white/5 transition-all border-b border-white/5 last:border-0"
+    >
       <div className="flex-1">
-        <p className="text-stone-800 font-medium text-sm">{name}</p>
-        <p className="text-stone-500 text-xs">{region}{grape ? ` — ${grape}` : ''}</p>
+        <p className="text-white font-medium group-hover:text-amber-400 transition-colors">{name}</p>
+        <p className="text-stone-400 text-sm mt-0.5">{region}{grape ? ` — ${grape}` : ''}</p>
       </div>
-      <span className="text-amber-700 font-semibold text-sm whitespace-nowrap">€{price}</span>
-    </div>
+      <div className="flex items-center gap-2">
+        <span className="text-amber-400 font-bold text-lg">€{price}</span>
+      </div>
+    </motion.div>
   );
 }
 
-function WineSection({ title, wines }: { title: string; wines: { name: string; region: string; grape?: string; price: string }[] }) {
+function WineSection({ title, wines, color }: { title: string; wines: { name: string; region: string; grape?: string; price: string }[]; color?: string }) {
+  const colorMap: Record<string, string> = {
+    sparkling: 'from-yellow-400/20 to-yellow-600/20',
+    white: 'from-lime-400/20 to-lime-600/20',
+    rose: 'from-pink-400/20 to-pink-600/20',
+    red: 'from-red-400/20 to-red-600/20',
+    orange: 'from-orange-400/20 to-orange-600/20',
+  };
+  const gradientClass = color ? colorMap[color] || colorMap.white : colorMap.white;
+
   return (
-    <div className="mb-10">
-      <h2 className="text-xl font-bold text-stone-800 mb-4 pb-2 border-b border-stone-200">{title}</h2>
-      <div className="space-y-1">
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="mb-12"
+    >
+      <div className="flex items-center gap-4 mb-6">
+        <div className={`w-3 h-12 rounded-full bg-gradient-to-b ${gradientClass}`}></div>
+        <h2 className="text-2xl md:text-3xl font-bold text-white" style={{ fontFamily: 'Playfair Display, serif' }}>{title}</h2>
+      </div>
+      <div className="bg-white/[0.02] border border-white/5 rounded-2xl overflow-hidden">
         {wines.map((wine, i) => (
           <WineCard key={i} {...wine} />
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 }
 
 function ByGlassList() {
   return (
     <div>
-      <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-8">
-        <p className="text-amber-800 text-sm text-center">
+      <div className="bg-gradient-to-r from-amber-500/10 to-amber-600/5 border border-amber-500/20 rounded-2xl p-5 mb-10">
+        <p className="text-amber-300 text-sm text-center font-medium">
           Prices shown as Glass / Bottle where applicable
         </p>
       </div>
 
       <WineSection
         title="Sparkling"
+        color="sparkling"
         wines={[
           { name: 'Domaine Kox, Crémant Sans Sulfites', region: 'Remich, Luxembourg', grape: 'Riesling', price: '10/45' },
           { name: 'Clement Perseval, Blanc de Blancs', region: 'Champagne, France', grape: 'Chardonnay', price: '18/80' },
@@ -98,6 +149,7 @@ function ByGlassList() {
 
       <WineSection
         title="White"
+        color="white"
         wines={[
           { name: 'Poderi Cillario, La Fea \'24', region: 'Dogliani Piedmont, Italy', grape: 'Favorita', price: '9/50' },
           { name: 'Krier Welbes, Pinot Gris \'24', region: 'Luxembourg', grape: 'Pinot Gris', price: '11/50' },
@@ -107,6 +159,7 @@ function ByGlassList() {
 
       <WineSection
         title="Rosé"
+        color="rose"
         wines={[
           { name: 'Château Romanin, Rosé \'24', region: 'Provence, France', price: '10/50' },
         ]}
@@ -114,6 +167,7 @@ function ByGlassList() {
 
       <WineSection
         title="Red"
+        color="red"
         wines={[
           { name: 'Marie et Vincent Tricot \'23', region: 'Auvergne, France', grape: 'Pinot Noir', price: '12/55' },
           { name: 'San Luigi, Poderi Cillario \'24', region: 'Dogliani Piedmont, Italy', grape: 'Dolcetto', price: '13/60' },
@@ -123,6 +177,7 @@ function ByGlassList() {
 
       <WineSection
         title="Orange"
+        color="orange"
         wines={[
           { name: 'Sauri, Paolo Maciot \'24', region: 'Piedmont, Italy', grape: 'Sauvignon Blanc', price: '—' },
         ]}
@@ -134,14 +189,15 @@ function ByGlassList() {
 function ByBottleList() {
   return (
     <div>
-      <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-8">
-        <p className="text-amber-800 text-sm text-center">
+      <div className="bg-gradient-to-r from-amber-500/10 to-amber-600/5 border border-amber-500/20 rounded-2xl p-5 mb-10">
+        <p className="text-amber-300 text-sm text-center font-medium">
           All prices in euros — natural, organic, and biodynamic selections
         </p>
       </div>
 
       <WineSection
         title="Sparkling"
+        color="sparkling"
         wines={[
           { name: 'Jonas Dostert Rochus \'21', region: 'Mosel, Germany', price: '60' },
           { name: 'Daniel & Bianka Pétillant Weiss', region: 'Rheinhessen, Germany', price: '55' },
@@ -154,6 +210,7 @@ function ByBottleList() {
 
       <WineSection
         title="White"
+        color="white"
         wines={[
           { name: 'Chardonnay Goldberg, Bianca and Daniel Schmitt 2022', region: 'Moselle, Germany', price: '65' },
           { name: 'Zeroine Côtes Du Jura Chardonnay 2021', region: 'Jura, France', price: '85' },
@@ -173,6 +230,7 @@ function ByBottleList() {
 
       <WineSection
         title="Red"
+        color="red"
         wines={[
           { name: 'Jonas Dostert Gros Carambolage', region: 'Mosel, Germany', price: '65' },
           { name: 'Domaine de Villeneuve Vieilles Vignes Châteauneuf-du-Pape 2020', region: 'Rhône, France', price: '85' },

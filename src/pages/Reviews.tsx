@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 interface Review {
   name: string;
@@ -67,13 +68,14 @@ const reviews: Review[] = [
   },
 ];
 
-function StarRating({ rating }: { rating: number }) {
+function StarRating({ rating, size = 'sm' }: { rating: number; size?: 'sm' | 'md' | 'lg' }) {
+  const sizeClass = size === 'lg' ? 'w-6 h-6' : size === 'md' ? 'w-5 h-5' : 'w-4 h-4';
   return (
     <div className="flex gap-0.5">
       {[1, 2, 3, 4, 5].map((star) => (
         <svg
           key={star}
-          className={`w-4 h-4 ${star <= rating ? 'text-amber-400' : 'text-stone-300'}`}
+          className={`${sizeClass} ${star <= rating ? 'text-amber-400' : 'text-stone-600'}`}
           fill="currentColor"
           viewBox="0 0 20 20"
         >
@@ -86,104 +88,132 @@ function StarRating({ rating }: { rating: number }) {
 
 export default function Reviews() {
   return (
-    <div className="min-h-screen bg-stone-50">
+    <div className="min-h-screen bg-stone-950">
       {/* Header */}
-      <section className="bg-stone-900 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-amber-400 text-sm uppercase tracking-[0.3em] mb-3">Public House</p>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Guest Reviews</h1>
-          <p className="text-stone-300 max-w-2xl mx-auto text-lg">
-            See what our guests have to say about their experience
-          </p>
+      <section className="relative py-24 md:py-32 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-stone-900 to-stone-950"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-900/20 via-transparent to-transparent"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <p className="text-amber-400 text-sm uppercase tracking-[0.4em] mb-4 font-medium">Public House</p>
+            <h1 className="text-5xl md:text-7xl font-bold text-white mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
+              Guest Reviews
+            </h1>
+            <p className="text-stone-300 max-w-2xl mx-auto text-lg">
+              See what our guests have to say about their experience
+            </p>
+          </motion.div>
         </div>
       </section>
 
       {/* Rating Summary */}
-      <section className="bg-white border-b border-stone-200">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <div className="flex flex-col md:flex-row items-center justify-center gap-8">
-            <div className="text-center">
-              <p className="text-6xl font-bold text-stone-800">4.7</p>
-              <div className="flex justify-center gap-1 mt-2">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <svg key={star} className="w-6 h-6 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
+      <section className="relative -mt-8 mb-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="bg-stone-900/80 backdrop-blur-xl border border-white/10 rounded-3xl p-8 md:p-12 shadow-2xl"
+          >
+            <div className="flex flex-col md:flex-row items-center justify-center gap-10">
+              <div className="text-center">
+                <p className="text-7xl font-bold text-white mb-2">4.7</p>
+                <div className="flex justify-center gap-1 mb-3">
+                  <StarRating rating={5} size="lg" />
+                </div>
+                <p className="text-stone-400 text-sm">338 reviews on Google</p>
+              </div>
+              <div className="flex-1 max-w-sm w-full">
+                {[
+                  { stars: 5, percent: 78 },
+                  { stars: 4, percent: 15 },
+                  { stars: 3, percent: 4 },
+                  { stars: 2, percent: 2 },
+                  { stars: 1, percent: 1 },
+                ].map((row) => (
+                  <div key={row.stars} className="flex items-center gap-3 mb-2">
+                    <span className="text-sm text-stone-400 w-3">{row.stars}</span>
+                    <svg className="w-3 h-3 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                    <div className="flex-1 bg-stone-800 rounded-full h-2 overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        whileInView={{ width: `${row.percent}%` }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1, delay: 0.2 }}
+                        className="bg-gradient-to-r from-amber-400 to-amber-500 h-full rounded-full"
+                      ></motion.div>
+                    </div>
+                    <span className="text-xs text-stone-500 w-8 text-right">{row.percent}%</span>
+                  </div>
                 ))}
               </div>
-              <p className="text-stone-500 mt-2">338 reviews on Google</p>
             </div>
-            <div className="flex-1 max-w-xs">
-              {[
-                { stars: 5, percent: 78 },
-                { stars: 4, percent: 15 },
-                { stars: 3, percent: 4 },
-                { stars: 2, percent: 2 },
-                { stars: 1, percent: 1 },
-              ].map((row) => (
-                <div key={row.stars} className="flex items-center gap-2 mb-1">
-                  <span className="text-xs text-stone-500 w-3">{row.stars}</span>
-                  <svg className="w-3 h-3 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                  <div className="flex-1 bg-stone-200 rounded-full h-2">
-                    <div
-                      className="bg-amber-400 h-2 rounded-full"
-                      style={{ width: `${row.percent}%` }}
-                    ></div>
-                  </div>
-                  <span className="text-xs text-stone-400 w-8">{row.percent}%</span>
-                </div>
-              ))}
-            </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Reviews List */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         <div className="space-y-6">
           {reviews.map((review, i) => (
-            <div key={i} className="bg-white rounded-xl p-6 shadow-sm border border-stone-100">
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-stone-200 rounded-full flex items-center justify-center text-stone-600 font-semibold text-sm">
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.05 }}
+              className="group bg-stone-900/50 backdrop-blur-sm border border-white/5 rounded-2xl p-6 md:p-8 hover:border-white/10 transition-all"
+            >
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-amber-400/20 to-amber-600/20 border border-amber-500/20 rounded-full flex items-center justify-center text-amber-400 font-bold">
                     {review.name.charAt(0)}
                   </div>
                   <div>
-                    <p className="font-medium text-stone-800">{review.name}</p>
-                    <div className="flex items-center gap-2">
+                    <p className="font-semibold text-white">{review.name}</p>
+                    <div className="flex items-center gap-2 mt-0.5">
                       {review.isLocalGuide && (
-                        <span className="text-xs text-amber-600 font-medium">Local Guide</span>
+                        <span className="text-xs text-amber-400 font-medium bg-amber-400/10 px-2 py-0.5 rounded-full">Local Guide</span>
                       )}
-                      <span className="text-xs text-stone-400">{review.date}</span>
+                      <span className="text-xs text-stone-500">{review.date}</span>
                     </div>
                   </div>
                 </div>
-                <StarRating rating={review.rating} />
+                <StarRating rating={review.rating} size="md" />
               </div>
-              <p className="text-stone-600 leading-relaxed">{review.text}</p>
+              <p className="text-stone-300 leading-relaxed">{review.text}</p>
               {review.ownerResponse && (
-                <div className="mt-4 ml-4 pl-4 border-l-2 border-amber-200 bg-amber-50/50 rounded-r-lg p-3">
-                  <p className="text-xs font-semibold text-amber-700 mb-1">Response from Public House</p>
-                  <p className="text-sm text-stone-600">{review.ownerResponse}</p>
+                <div className="mt-5 ml-4 pl-5 border-l-2 border-amber-500/30 bg-amber-500/5 rounded-r-xl p-4">
+                  <p className="text-xs font-bold text-amber-400 mb-2 uppercase tracking-wider">Response from Public House</p>
+                  <p className="text-sm text-stone-300">{review.ownerResponse}</p>
                 </div>
               )}
-            </div>
+            </motion.div>
           ))}
         </div>
 
         {/* CTA */}
-        <div className="mt-12 text-center bg-stone-100 rounded-xl p-8">
-          <h3 className="text-xl font-bold text-stone-800 mb-2">Enjoyed your visit?</h3>
-          <p className="text-stone-500 mb-4">We'd love to hear from you on Google Maps</p>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-16 text-center bg-gradient-to-br from-stone-900 to-stone-800 border border-white/5 rounded-3xl p-10"
+        >
+          <h3 className="text-2xl font-bold text-white mb-3" style={{ fontFamily: 'Playfair Display, serif' }}>Enjoyed your visit?</h3>
+          <p className="text-stone-400 mb-6">We'd love to hear from you on Google Maps</p>
           <Link
             to="/booking"
-            className="inline-flex items-center justify-center px-6 py-3 bg-amber-600 hover:bg-amber-500 text-white font-semibold rounded-md transition-colors"
+            className="inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-stone-900 font-bold rounded-full hover:from-amber-400 hover:to-amber-500 transition-all shadow-lg shadow-amber-500/20 hover:shadow-amber-500/40 hover:scale-105"
           >
             Book Your Visit
           </Link>
-        </div>
+        </motion.div>
       </section>
     </div>
   );
