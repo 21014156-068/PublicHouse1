@@ -127,7 +127,7 @@ export default function Home() {
         </button>
 
         {/* Slide Indicators */}
-        <div className="absolute bottom-24 md:bottom-28 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3">
+        <div className="absolute bottom-8 md:bottom-10 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3">
           {heroImages.map((_, index) => (
             <button
               key={index}
@@ -163,80 +163,110 @@ export default function Home() {
           </span>
         </div>
 
-        {/* Content */}
-        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: 'easeOut' }}
-          >
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-              className="text-amber-400 text-sm uppercase tracking-[0.4em] mb-6 font-medium"
-            >
-              at Casino Luxembourg
-            </motion.p>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 1 }}
-              className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tight text-white mb-6"
-              style={{ fontFamily: 'Playfair Display, serif' }}
-            >
-              Public
-              <br />
-              <span className="text-gradient">House</span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8, duration: 1 }}
-              className="text-xl md:text-2xl text-stone-300 max-w-2xl mx-auto mb-4 leading-relaxed"
-            >
-              A new chapter. The same philosophy.
-            </motion.p>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1, duration: 1 }}
-              className="text-lg text-stone-400 max-w-xl mx-auto mb-12"
-            >
-              Seasonal ingredients, natural wines, and the freedom to choose.
-            </motion.p>
-
+        {/* Content - Left Aligned */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 w-full">
+          <div className="max-w-2xl text-left">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2, duration: 0.8 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center"
+              transition={{ duration: 1, ease: 'easeOut' }}
             >
-              <Link
-                to="/booking"
-                className="group relative inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-amber-500 to-amber-600 text-stone-900 font-bold rounded-full transition-all shadow-2xl shadow-amber-500/20 hover:shadow-amber-500/40 hover:scale-105"
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.8 }}
+                className="text-amber-400 text-sm uppercase tracking-[0.4em] mb-6 font-medium"
               >
-                <span className="relative z-10">Reserve a Table</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              </Link>
-              <Link
-                to="/menu"
-                className="inline-flex items-center justify-center px-8 py-4 border-2 border-white/20 hover:border-amber-400/50 text-white hover:text-amber-400 font-semibold rounded-full transition-all duration-300 backdrop-blur-sm hover:backdrop-blur-md"
+                at Casino Luxembourg
+              </motion.p>
+
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 1 }}
+                className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white mb-6 whitespace-nowrap"
+                style={{ fontFamily: 'Playfair Display, serif' }}
               >
-                View Menu
-              </Link>
+                Public <span className="text-gradient">House</span>
+              </motion.h1>
+
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8, duration: 1 }}
+                className="text-xl md:text-2xl text-stone-300 mb-4 leading-relaxed"
+              >
+                A new chapter. The same philosophy.
+              </motion.p>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1, duration: 1 }}
+                className="text-lg text-stone-400 mb-10"
+              >
+                Seasonal ingredients, natural wines, and the freedom to choose.
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.2, duration: 0.8 }}
+                className="flex flex-col sm:flex-row gap-4"
+              >
+                <Link
+                  to="/booking"
+                  className="group relative inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-amber-500 to-amber-600 text-stone-900 font-bold rounded-full transition-all shadow-2xl shadow-amber-500/20 hover:shadow-amber-500/40 hover:scale-105"
+                >
+                  <span className="relative z-10">Reserve a Table</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                </Link>
+                <Link
+                  to="/menu"
+                  className="inline-flex items-center justify-center px-8 py-4 border-2 border-white/20 hover:border-amber-400/50 text-white hover:text-amber-400 font-semibold rounded-full transition-all duration-300 backdrop-blur-sm hover:backdrop-blur-md"
+                >
+                  View Menu
+                </Link>
+              </motion.div>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
 
-        {/* Scroll indicator */}
+        {/* Floating Menu Card - Bottom Right */}
+        <motion.div
+          initial={{ opacity: 0, x: 50, y: 50 }}
+          animate={{ opacity: 1, x: 0, y: 0 }}
+          transition={{ delay: 1.5, duration: 0.8, ease: 'easeOut' }}
+          className="absolute bottom-24 md:bottom-28 right-4 md:right-8 z-20"
+        >
+          <Link
+            to="/menu"
+            className="group relative block bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-5 md:p-6 hover:bg-white/15 hover:border-amber-400/30 transition-all duration-300 hover:scale-105 shadow-2xl"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 md:w-16 md:h-16 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/30 group-hover:shadow-amber-500/50 transition-shadow">
+                <svg className="w-7 h-7 md:w-8 md:h-8 text-stone-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-white font-bold text-base md:text-lg mb-0.5">View Our Menu</p>
+                <p className="text-stone-300 text-xs md:text-sm">Discover seasonal dishes</p>
+              </div>
+              <svg className="w-5 h-5 text-amber-400 group-hover:translate-x-1 transition-transform ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+            {/* Decorative gradient line */}
+            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-b-2xl"></div>
+          </Link>
+        </motion.div>
+
+        {/* Scroll indicator - hidden on mobile to avoid overlap */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2, duration: 1 }}
-          className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20"
+          className="absolute bottom-2 left-1/2 -translate-x-1/2 z-20 hidden md:block"
         >
           <motion.div
             animate={{ y: [0, 10, 0] }}
