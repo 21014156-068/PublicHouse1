@@ -1,20 +1,166 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
+
+const heroImages = [
+  {
+    src: 'https://image.qwenlm.ai/generated-images/97a34ab0-c7c8-4370-b5df-5103d2cb8fc0/_result.png',
+    alt: 'Elegant restaurant interior with warm lighting',
+  },
+  {
+    src: 'https://image.qwenlm.ai/generated-images/7dd675e9-a5b5-4b6f-a284-762b319cdbd5/_result.png',
+    alt: 'Curated natural wine collection',
+  },
+  {
+    src: 'https://image.qwenlm.ai/generated-images/d09bc25a-bcfa-4e5f-bef4-5f9311e8dc98/_result.png',
+    alt: 'Chef preparing artisanal dishes',
+  },
+  {
+    src: 'https://image.qwenlm.ai/generated-images/ebddaf5c-0f89-478b-bc4f-8894d87f631f/_result.png',
+    alt: 'Beautifully plated fine dining dish',
+  },
+];
 
 export default function Home() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [direction, setDirection] = useState(1);
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    if (isPaused) return;
+    const interval = setInterval(() => {
+      setDirection(1);
+      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [isPaused]);
+
+  const goToSlide = (index: number) => {
+    setDirection(index > currentSlide ? 1 : -1);
+    setCurrentSlide(index);
+  };
+
+  const nextSlide = () => {
+    setDirection(1);
+    setCurrentSlide((prev) => (prev + 1) % heroImages.length);
+  };
+
+  const prevSlide = () => {
+    setDirection(-1);
+    setCurrentSlide((prev) => (prev - 1 + heroImages.length) % heroImages.length);
+  };
+
+  const slideVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? '100%' : '-100%',
+      opacity: 0,
+      scale: 1.1,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+      scale: 1,
+    },
+    exit: (direction: number) => ({
+      x: direction < 0 ? '100%' : '-100%',
+      opacity: 0,
+      scale: 0.95,
+    }),
+  };
+
   return (
     <div className="bg-stone-950">
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Image */}
+      {/* Hero Section with Image Slider */}
+      <section
+        className="relative min-h-screen flex items-center justify-center overflow-hidden"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        {/* Background Image Slider */}
         <div className="absolute inset-0">
-          <img
-            src="https://image.qwenlm.ai/generated-images/97a34ab0-c7c8-4370-b5df-5103d2cb8fc0/_result.png"
-            alt="Public House Restaurant"
-            className="w-full h-full object-cover"
-          />
+          <AnimatePresence initial={false} custom={direction} mode="popLayout">
+            <motion.div
+              key={currentSlide}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                x: { type: 'spring', stiffness: 300, damping: 30 },
+                opacity: { duration: 0.8 },
+                scale: { duration: 1.2 },
+              }}
+              className="absolute inset-0"
+            >
+              <img
+                src={heroImages[currentSlide].src}
+                alt={heroImages[currentSlide].alt}
+                className="w-full h-full object-cover"
+              />
+            </motion.div>
+          </AnimatePresence>
+          
+          {/* Overlays */}
           <div className="absolute inset-0 bg-gradient-to-b from-stone-950/60 via-stone-950/40 to-stone-950"></div>
           <div className="absolute inset-0 bg-gradient-to-r from-stone-950/80 via-transparent to-stone-950/80"></div>
+        </div>
+
+        {/* Navigation Arrows */}
+        <button
+          onClick={prevSlide}
+          className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all duration-300 group"
+          aria-label="Previous slide"
+        >
+          <svg className="w-5 h-5 md:w-6 md:h-6 group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <button
+          onClick={nextSlide}
+          className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all duration-300 group"
+          aria-label="Next slide"
+        >
+          <svg className="w-5 h-5 md:w-6 md:h-6 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        {/* Slide Indicators */}
+        <div className="absolute bottom-24 md:bottom-28 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3">
+          {heroImages.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className="relative group"
+              aria-label={`Go to slide ${index + 1}`}
+            >
+              <div className={`w-2 h-2 rounded-full transition-all duration-500 ${
+                index === currentSlide
+                  ? 'bg-amber-400 w-8'
+                  : 'bg-white/40 hover:bg-white/60'
+              }`}></div>
+              {index === currentSlide && (
+                <motion.div
+                  className="absolute inset-0 bg-amber-400 rounded-full"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: 5, ease: 'linear' }}
+                  style={{ originX: isPaused ? 1 : 0 }}
+                  key={currentSlide}
+                />
+              )}
+            </button>
+          ))}
+        </div>
+
+        {/* Slide Counter */}
+        <div className="absolute top-24 md:top-28 right-4 md:right-8 z-20 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-2">
+          <span className="text-white text-sm font-medium">
+            <span className="text-amber-400">{String(currentSlide + 1).padStart(2, '0')}</span>
+            <span className="mx-1 text-white/40">/</span>
+            <span className="text-white/60">{String(heroImages.length).padStart(2, '0')}</span>
+          </span>
         </div>
 
         {/* Content */}
@@ -90,7 +236,7 @@ export default function Home() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2, duration: 1 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20"
         >
           <motion.div
             animate={{ y: [0, 10, 0] }}
