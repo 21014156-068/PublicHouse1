@@ -102,6 +102,18 @@ export default function Contact() {
                     </a>
                   </div>
                 </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-amber-400/20 to-amber-600/20 border border-amber-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <span className="text-xl">✉️</span>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-white mb-1">Email</p>
+                    <a href="mailto:reservation@publichouse.lu" className="text-amber-400 hover:text-amber-300 font-medium transition-colors">
+                      reservation@publichouse.lu
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -146,6 +158,12 @@ export default function Contact() {
                   📞 Call Us
                 </a>
                 <a
+                  href="mailto:reservation@publichouse.lu"
+                  className="flex items-center justify-center gap-2 px-5 py-4 bg-purple-600/20 border border-purple-500/20 text-purple-400 font-semibold rounded-xl hover:bg-purple-600/30 transition-all"
+                >
+                  ✉️ Email Us
+                </a>
+                <a
                   href="https://wa.me/352621573723"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -157,7 +175,7 @@ export default function Contact() {
                   href="https://www.google.com/maps/dir//Public+House,+7+Bd+Franklin+Delano+Roosevelt,+2450+Luxembourg"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 px-5 py-4 bg-blue-600/20 border border-blue-500/20 text-blue-400 font-semibold rounded-xl hover:bg-blue-600/30 transition-all"
+                  className="flex items-center justify-center gap-2 px-5 py-4 bg-blue-600/20 border border-blue-500/20 text-blue-400 font-semibold rounded-xl hover:bg-blue-600/30 transition-all sm:col-span-2"
                 >
                   🗺️ Get Directions
                 </a>

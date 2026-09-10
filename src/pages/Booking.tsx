@@ -386,6 +386,12 @@ export default function Booking() {
               📞 Call +352 621 573 723
             </a>
             <a
+              href="mailto:reservation@publichouse.lu"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white/5 border border-white/10 text-stone-300 rounded-xl hover:bg-white/10 transition-all text-sm font-medium"
+            >
+              ✉️ Email Us
+            </a>
+            <a
               href="https://www.resos.com"
               target="_blank"
               rel="noopener noreferrer"

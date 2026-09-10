@@ -89,6 +89,10 @@ export default function Footer() {
                 <a href="tel:+352621573723" className="text-stone-300 hover:text-amber-400 transition-colors">+352 621 573 723</a>
               </div>
               <div className="flex items-center gap-3">
+                <span className="text-amber-400">✉️</span>
+                <a href="mailto:reservation@publichouse.lu" className="text-stone-300 hover:text-amber-400 transition-colors">reservation@publichouse.lu</a>
+              </div>
+              <div className="flex items-center gap-3">
                 <span className="text-amber-400">🕐</span>
                 <div>
                   <p className="text-stone-300">Tue–Fri: 12:00–14:00 / 18:30–22:00</p>
